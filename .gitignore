@@ -3,3 +3,4 @@ NumTemp-E9C0/
 checkpoint.pt
 model_*_large_oracle/
 predictions.csv
+ground_truth.csv
