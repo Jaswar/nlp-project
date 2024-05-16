@@ -2,3 +2,4 @@ NumTemp-E9C0/
 .idea/
 checkpoint.pt
 model_*_large_oracle/
+predictions.csv
