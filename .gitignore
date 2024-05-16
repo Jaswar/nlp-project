@@ -1,5 +1,4 @@
 NumTemp-E9C0/
 .idea/
 checkpoint.pt
-model_roberta_large_oracle/
-model_deberta_large_oracle/
+model_*_large_oracle/
