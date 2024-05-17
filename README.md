@@ -1,6 +1,6 @@
 ## Models
 
- - BART-large-MNLI: 
+ - BART-large-MNLI: https://www.kaggle.com/code/alexandraneagu101/nlp-bart-large-mnli 
  - Roberta-Large-MNLI:
  - sileod/deberta-v3-base-tasksource-nli: `deberta.ipynb`
  - FlanT5: 
@@ -10,7 +10,7 @@
  - NumT5:
  - LUNA:
  - PASTA:
- - ElasticRoberta:
+ - ElasticRoBERTa: Couldn't set up ElasticRoBERTa, set up ElasticBERT(-large) instead: https://www.kaggle.com/code/alexandraneagu101/nlp-elasticbert-large
 
 ## Scripts
 
