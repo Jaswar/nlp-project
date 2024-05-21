@@ -31,7 +31,7 @@ python test_qual.py --claims_path=<claims_path> --pred_path=<pred_path> --gt_pat
 ```
 For example:
 ```bash
-python test_quant.py --claims_path=NumTemp-E9C0/output/bm25_top_100_test --pred_path=./predictions --gt_path=ground_truth.csv
+python test_qual.py --claims_path=NumTemp-E9C0/output/bm25_top_100_test --pred_path=./predictions --gt_path=ground_truth.csv
 ```
 
 The script also optionally takes the number of claims to print (`--n`, default set to 5) and the seed used for the random selection of the claims (`--seed`).
