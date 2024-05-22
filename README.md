@@ -6,7 +6,7 @@
  - FlanT5: 
  - GPT2: 
  - BART:
- - MathRoberta: `nlp-math-roberta.ipynb`
+ - Math(Ro)BERTa: `nlp-math-roberta.ipynb` (Fixed: https://www.kaggle.com/code/alexandraneagu101/nlp-math-ro-berta/edit)
  - NumT5:
  - LUNA:
  - PASTA:
