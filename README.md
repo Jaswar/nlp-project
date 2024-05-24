@@ -10,7 +10,7 @@
  - NumT5:
  - LUNA:
  - PASTA:
- - ElasticRoBERTa: Couldn't set up ElasticRoBERTa, set up ElasticBERT(-large) instead: https://www.kaggle.com/code/alexandraneagu101/nlp-elasticbert-large
+ - ElasticRoBERTa: Couldn't set up ElasticRoBERTa, set up ElasticBERT(-large) instead: ~~https://www.kaggle.com/code/alexandraneagu101/nlp-elasticbert-large~~ `universal-elasticbert.ipynb`
 
 ## Scripts
 
