@@ -1,8 +1,23 @@
 import argparse
 import json
-from sklearn.metrics import accuracy_score
 import os
 import random
+
+nli_models = ['BARTlargeMNLI', 'deberta']
+generative_models = ['bart', 'flant5', 'gpt']
+math_models = ['ElasticBERTlarge', 'MathRoBERTa']  # numt5 and pasta removed due to poor performance
+all_models = nli_models + generative_models + math_models
+
+
+def print_subset(subset, claims, mapping, ground_truth, predictions):
+    for i in random.sample(subset, min(args.n, len(subset))):
+        print(f'Claim: {claims[i]["claim"]}')
+        for e in claims[i]['top_n'][:10]:
+            print(f'Evidence: {e}')
+        print(f'Label: {mapping[ground_truth[i]]}')
+        for model, preds in predictions.items():
+            print(f'{model}: {mapping[preds[i]]}')
+        print()
 
 
 def main(args):
@@ -24,33 +39,53 @@ def main(args):
     for file in os.listdir(args.pred_path):
         joint_path = os.path.join(args.pred_path, file)
         model = file.replace('predictions', '').replace('.csv', '')
-        model = ''.join(c for c in model if c.isalpha())
+        model = ''.join(c for c in model if c.isalnum())
         with open(joint_path) as f:
             preds = f.read().split(',')
             preds = [int(p) for p in preds]
             predictions[model] = preds
 
+    # only choose models defined in all_models
+    # this is because some models (numt5, pasta) were removed due to poor performance
+    # keeping them would cause some intersection sets to be empty
+    filtered_predictions = {}
+    for model in all_models:
+        filtered_predictions[model] = predictions[model]
+    predictions = filtered_predictions
+
     incorrect_claims = {}
+    correct_claims = {}
     for model, preds in predictions.items():
         incorrect_claims[model] = set()
+        correct_claims[model] = set()
         for i, (pred, gt) in enumerate(zip(preds, ground_truth)):
             if pred != gt:
                 incorrect_claims[model].add(i)
+            else:
+                correct_claims[model].add(i)
 
-    intersection = set.intersection(*incorrect_claims.values())
-    intersection = list(intersection)
-    # this is to allow us to select which claims to print
-    random.shuffle(intersection)
-    intersection = intersection[:args.n]
-    print(f'The claims to print are: {intersection}\n')
-    for i in intersection:
-        print(f"Claim: {claims[i]['claim']}")
-        print(f"Ground truth: {mapping[ground_truth[i]]}")
-        for model in predictions:
-            model_prediction = predictions[model][i]
-            print(f"{model}: {mapping[model_prediction]}")
-        print()
+    nli_generative_incorrect = set.intersection(
+        *[set(incorrect_claims[model]) for model in nli_models + generative_models])
+    math_incorrect = set.intersection(*[set(incorrect_claims[model]) for model in math_models])
+    nli_generative_correct = set.intersection(
+        *[set(correct_claims[model]) for model in nli_models + generative_models])
+    math_correct = set.intersection(*[set(correct_claims[model]) for model in math_models])
 
+    # get cases where nli/generative incorrect, math correct
+    nli_gen_inc_math_cor = list(nli_generative_incorrect.intersection(math_correct))
+    # get cases where nli/generative correct, math incorrect
+    nli_gen_cor_math_inc = list(nli_generative_correct.intersection(math_incorrect))
+    # get cases where all incorrect
+    all_incorrect = list(nli_generative_incorrect.intersection(math_incorrect))
+
+    print('Incorrect claims where NLI/generative models are incorrect and math models are correct:')
+    print_subset(nli_gen_inc_math_cor, claims, mapping, ground_truth, predictions)
+
+    print('Incorrect claims where NLI/generative models are correct and math models are incorrect:')
+    print_subset(nli_gen_cor_math_inc, claims, mapping, ground_truth, predictions)
+
+    print('Incorrect claims where all models are incorrect:')
+    print_subset(all_incorrect, claims, mapping, ground_truth, predictions)
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
