@@ -4,3 +4,4 @@ checkpoint.pt
 model_*_large_oracle/
 **__pycache__/**
 elasticbert
+predictions.csv
