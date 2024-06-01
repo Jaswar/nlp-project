@@ -1,7 +1,7 @@
 ## Models
 
  - BART-large-MNLI: `bart-large-mnli.ipynb`
- - Roberta-Large-MNLI:
+ - Roberta-Large-MNLI: `roberta-large-mnli.ipynb`
  - sileod/deberta-v3-base-tasksource-nli: `deberta.ipynb`
  - FlanT5: `flant5.ipynb`
  - GPT2: `gpt2.ipynb`
