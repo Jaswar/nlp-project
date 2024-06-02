@@ -1,16 +1,15 @@
 ## Models
 
- - BART-large-MNLI: https://www.kaggle.com/code/alexandraneagu101/nlp-bart-large-mnli 
- - Roberta-Large-MNLI:
+ - BART-large-MNLI: `bart-large-mnli.ipynb`
+ - Roberta-Large-MNLI: `roberta-large-mnli.ipynb`
  - sileod/deberta-v3-base-tasksource-nli: `deberta.ipynb`
- - FlanT5: 
- - GPT2: 
- - BART:
- - Math(Ro)BERTa: `nlp-math-roberta.ipynb` (Fixed: https://www.kaggle.com/code/alexandraneagu101/nlp-math-ro-berta/edit)
- - NumT5:
- - LUNA:
- - PASTA:
- - ElasticRoBERTa: Couldn't set up ElasticRoBERTa, set up ElasticBERT(-large) instead: ~~https://www.kaggle.com/code/alexandraneagu101/nlp-elasticbert-large~~ `universal-elasticbert.ipynb`
+ - FlanT5: `flant5.ipynb`
+ - GPT2: `gpt2.ipynb`
+ - BART: `bart.ipynb`
+ - Math(Ro)BERTa: `math-roberta.ipynb`
+ - NumT5: `numt5.ipynb`
+ - PASTA: `pasta.ipynb`
+ - ElasticBERT: `elastic-bert.ipynb`
 
 ## Scripts
 
