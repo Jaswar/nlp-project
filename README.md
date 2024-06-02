@@ -1,5 +1,7 @@
 ## Models
 
+The models can be found in the `models` directory.
+
  - BART-large-MNLI: `bart-large-mnli.ipynb`
  - Roberta-Large-MNLI: `roberta-large-mnli.ipynb`
  - sileod/deberta-v3-base-tasksource-nli: `deberta.ipynb`
