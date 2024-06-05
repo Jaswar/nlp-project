@@ -13,6 +13,12 @@ The models can be found in the `models` directory.
  - PASTA: `pasta.ipynb`
  - ElasticBERT: `elastic-bert.ipynb`
 
+### Utility models:
+
+- Claim type classifier: BART-large-MNLI: https://www.kaggle.com/code/alexandraneagu101/claim-type-bart-large-mnli
+- Claim decomposition - Flan-T5-large prompting: https://www.kaggle.com/code/alexandraneagu101/claim-decomposition
+- Claim decomposition - Flan-T5-large fine-tuned on StrategyQA: https://www.kaggle.com/code/alexandraneagu101/flan-t5-large-on-strategyqa
+
 ## Scripts
 
  - `test_quant.py`: Script for the quantitative evaluation of the models. It computes the accuracy per each `taxonomy_label` and the overall accuracy.
