@@ -6,3 +6,4 @@ model_*_large_oracle/
 elasticbert
 predictions.csv
 pasta/
+results/

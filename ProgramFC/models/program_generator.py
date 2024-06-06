@@ -45,8 +45,9 @@ class Reasoning_Program_Generator:
         # initialize empty results
         result_dict = {}
         for idx, sample in enumerate(raw_dataset):
+            sample['id'] = idx
             result = {'idx': idx,
-                        'id': idx,
+                        'id': sample['id'],
                         'claim': sample['claim'],
                         'gold': sample['label'], 
                         'predicted_programs': []}
@@ -55,7 +56,7 @@ class Reasoning_Program_Generator:
 
         # for each iteration
         for iteration in range(self.num_programs_per_example):
-            print(f"Generating programs for iteration {iteration + 1}...")
+            # print(f"Generating programs for iteration {iteration + 1}...")
             # for each chunk
             for chunk in tqdm(dataset_chunks):
                 # create prompt
@@ -71,18 +72,18 @@ class Reasoning_Program_Generator:
                         try:
                             output = self.openai_api.generate(full_prompt, temperature)
                             self.update_results(sample, output)
-                        except:
-                            print('Error in generating reasoning programs for example: ', sample['id'])
+                        except Exception as e:
+                            print('Error in generating reasoning programs for example: ', sample['id'], e)
 
-        print(f"Generated {len(result_dict)} examples.")
-        # create outputs
-        for key in result_dict:
-            outputs.append(result_dict[key])
-        sorted_outputs = sorted(outputs, key=lambda x: x['idx'])
+                # create outputs
+                outputs = []
+                for key in result_dict:
+                    outputs.append(result_dict[key])
+                sorted_outputs = sorted(outputs, key=lambda x: x['idx'])
 
-        # save outputs
-        with open(os.path.join(self.save_path, f'{self.dataset_name}_N={self.num_programs_per_example}_{self.model_name}_programs.json'), 'w') as f:
-            json.dump(sorted_outputs, f, indent=2, ensure_ascii=False)
+                # save outputs
+                with open(os.path.join(self.save_path, f'{self.dataset_name}_N={self.num_programs_per_example}_{self.model_name}_programs.json'), 'w') as f:
+                    json.dump(sorted_outputs, f, indent=2, ensure_ascii=False)
 
 def parse_args():
     parser = argparse.ArgumentParser()

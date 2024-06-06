@@ -45,7 +45,7 @@ async def dispatch_openai_chat_requests(
     ]
     return await asyncio.gather(*async_responses)
 
-async def dispatch_openai_prompt_requests(
+def dispatch_openai_prompt_requests(
     messages_list: list[list[dict[str,Any]]],
     model: str,
     temperature: float,
@@ -53,8 +53,7 @@ async def dispatch_openai_prompt_requests(
     top_p: float,
     stop_words: list[str]
 ) -> list[str]:
-    print([x for x in messages_list])
-    async_responses = [
+    responses = [
         openai.Completion.create(
             model=model,
             prompt=x,
@@ -67,7 +66,7 @@ async def dispatch_openai_prompt_requests(
         )
         for x in messages_list
     ]
-    return await asyncio.gather(*async_responses)
+    return responses
 
 class OpenAIModel:
     def __init__(self, API_KEY, model_name, stop_words, max_new_tokens) -> None:
@@ -128,11 +127,10 @@ class OpenAIModel:
         return [x['choices'][0]['message']['content'].strip() for x in predictions]
     
     def batch_prompt_generate(self, prompt_list, temperature = 0.0):
-        predictions = asyncio.run(
-            dispatch_openai_prompt_requests(
+        predictions = dispatch_openai_prompt_requests(
                     prompt_list, self.model_name, temperature, self.max_new_tokens, 1.0, self.stop_words
             )
-        )
+
         return [x['choices'][0]['text'].strip() for x in predictions]
 
     def batch_generate(self, messages_list, temperature = 0.0):
