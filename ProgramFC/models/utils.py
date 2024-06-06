@@ -33,7 +33,7 @@ async def dispatch_openai_chat_requests(
         List of responses from OpenAI API.
     """
     async_responses = [
-        openai.ChatCompletion.acreate(
+       openai.ChatCompletion.create(
             model=model,
             messages=x,
             temperature=temperature,
@@ -53,8 +53,9 @@ async def dispatch_openai_prompt_requests(
     top_p: float,
     stop_words: list[str]
 ) -> list[str]:
+    print([x for x in messages_list])
     async_responses = [
-        openai.Completion.acreate(
+        openai.Completion.create(
             model=model,
             prompt=x,
             temperature=temperature,
@@ -135,7 +136,7 @@ class OpenAIModel:
         return [x['choices'][0]['text'].strip() for x in predictions]
 
     def batch_generate(self, messages_list, temperature = 0.0):
-        if self.model_name in ['text-davinci-002', 'code-davinci-002', 'text-davinci-003']:
+        if self.model_name in ['text-davinci-002', 'code-davinci-002', 'text-davinci-003', 'gpt-3.5-turbo-instruct']:
             return self.batch_prompt_generate(messages_list, temperature)
         elif self.model_name in ['gpt-4', 'gpt-3.5-turbo']:
             return self.batch_chat_generate(messages_list, temperature)

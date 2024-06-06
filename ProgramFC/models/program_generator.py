@@ -23,14 +23,14 @@ class Reasoning_Program_Generator:
         # programs = [program_list]
         self.result_dict[sample['id']]['predicted_programs'].append(program_list)
 
-    def batch_generate_programs(self, batch_size = 10):
+    def batch_generate_programs(self, batch_size = 1):
         # create output_dir
         self.result_dict = []
         if not os.path.exists(self.save_path):
             os.makedirs(self.save_path)
 
         # load dataset
-        with open(os.path.join(self.data_path, self.dataset_name, 'claims', 'dev.json'), 'r') as f:
+        with open(os.path.join(self.data_path, 'NumTemp-E9C0', 'data', 'raw_data', 'train_claims_quantemp.json'), 'r') as f:
             raw_dataset = json.load(f)
         
         raw_dataset = raw_dataset if self.args.num_eval_samples < 0 else raw_dataset[:self.args.num_eval_samples]
@@ -46,11 +46,11 @@ class Reasoning_Program_Generator:
         result_dict = {}
         for idx, sample in enumerate(raw_dataset):
             result = {'idx': idx,
-                        'id': sample['id'], 
+                        'id': idx,
                         'claim': sample['claim'],
                         'gold': sample['label'], 
                         'predicted_programs': []}
-            result_dict[sample['id']] = result
+            result_dict[idx] = result
         self.result_dict = result_dict
 
         # for each iteration
