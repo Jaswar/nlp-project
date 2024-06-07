@@ -10,6 +10,11 @@ def thread_job(thread_id, claims, corpus, tokenized_corpus, output):
     for i, claim in enumerate(claims):
         print(f'Processing claim {i + 1} in thread {thread_id}')
         tokenized_claim = claim['claim'].split(' ')
+        if 'predicted_programs' in claim:
+            program = claim['predicted_programs'][0]
+            program = ' '.join(p for p in program)
+            tokenized_program = program.split(' ')
+            tokenized_claim += tokenized_program
         top_n = bm25.get_top_n(tokenized_claim, corpus, n=100)
         claim['top_n'] = top_n
         result.append(claim)
@@ -22,7 +27,7 @@ def main():
     num_processes = 16
     with open('NumTemp-E9C0/data/corpus_evidence_unified.json') as f:
         corpus = json.load(f)
-    with open('NumTemp-E9C0/data/raw_data/val_claims_quantemp.json') as f:
+    with open('NumTemp-E9C0/data/raw_data/val_programs.json') as f:
         claims = json.load(f)
 
     corpus = [corpus[key] for key in corpus]
@@ -49,7 +54,7 @@ def main():
 
     print(len(result))
 
-    with open('NumTemp-E9C0/output/bm25_top_100_val', 'w') as f:
+    with open('NumTemp-E9C0/output/programfc_bm25_top_100_val', 'w') as f:
         json.dump(result, f, indent=4)
 
 
