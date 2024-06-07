@@ -14,6 +14,7 @@ class Reasoning_Program_Generator:
         self.model_name = args.model_name
         self.save_path = args.save_path
         self.num_programs_per_example = args.num_programs_per_example
+        self.checkpoint_file = args.checkpoint_file
 
         self.openai_api = OpenAIModel(args.api_key, args.model_name, args.stop_words, args.max_new_tokens)
         self.prompt_loader = Prompt_Loader()
@@ -23,14 +24,15 @@ class Reasoning_Program_Generator:
         # programs = [program_list]
         self.result_dict[sample['id']]['predicted_programs'].append(program_list)
 
-    def batch_generate_programs(self, batch_size = 1):
+    def batch_generate_programs(self):
+        batch_size = 1  # other batch sizes not supported
         # create output_dir
         self.result_dict = []
         if not os.path.exists(self.save_path):
             os.makedirs(self.save_path)
 
         # load dataset
-        with open(os.path.join(self.data_path, 'NumTemp-E9C0', 'data', 'raw_data', 'train_claims_quantemp.json'), 'r') as f:
+        with open(os.path.join(self.data_path, 'NumTemp-E9C0', 'data', 'raw_data', 'val_claims_quantemp.json'), 'r') as f:
             raw_dataset = json.load(f)
         
         raw_dataset = raw_dataset if self.args.num_eval_samples < 0 else raw_dataset[:self.args.num_eval_samples]
@@ -44,14 +46,22 @@ class Reasoning_Program_Generator:
         
         # initialize empty results
         result_dict = {}
+
         for idx, sample in enumerate(raw_dataset):
             sample['id'] = idx
             result = {'idx': idx,
                         'id': sample['id'],
                         'claim': sample['claim'],
-                        'gold': sample['label'], 
+                        'gold': sample['label'],
                         'predicted_programs': []}
             result_dict[idx] = result
+
+        if self.checkpoint_file is not None:
+            with open(self.checkpoint_file, 'r') as f:
+                o = json.load(f)
+                for x in o:
+                    result_dict[x['id']] = x
+
         self.result_dict = result_dict
 
         # for each iteration
@@ -59,6 +69,8 @@ class Reasoning_Program_Generator:
             # print(f"Generating programs for iteration {iteration + 1}...")
             # for each chunk
             for chunk in tqdm(dataset_chunks):
+                if len(result_dict[chunk[0]['id']]['predicted_programs']) > 0:
+                    continue
                 # create prompt
                 full_prompts = [self.prompt_loader.prompt_construction(example['claim'], self.dataset_name) for example in chunk]
                 try:
@@ -97,6 +109,7 @@ def parse_args():
     parser.add_argument('--model_name', type=str, default='text-davinci-003')
     parser.add_argument('--stop_words', type=str, default='# The claim is')
     parser.add_argument('--max_new_tokens', type=int, default=1024)
+    parser.add_argument('--checkpoint_file', type=str, default=None)
     args = parser.parse_args()
     return args
 
