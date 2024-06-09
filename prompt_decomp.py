@@ -27,10 +27,10 @@ file = "train"
 data_dir = "NumTemp-E9C0/data/raw_data/"
 data_file_ending = "_claims_quantemp.json"
 
-write_dir = "NumTemp-E9C0/data/decomp_data/"
+write_dir = "NumTemp-E9C0/data/decomp_data_prompt/"
 write_file_ending = "_claims_quantemp_decomp.json"
 
-claim_with_subq_dir = "NumTemp-E9C0/data/claim_with_subq_data/"
+claim_with_subq_dir = "NumTemp-E9C0/data/claim_with_subq_data_prompt/"
 claim_with_subq_file_ending = "_claim_with_subq.json"
 
 

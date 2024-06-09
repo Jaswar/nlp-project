@@ -40,16 +40,17 @@ def thread_job_sq(thread_id, claims, corpus, tokenized_corpus, output):
 def main():
     # uses "only" 40GB of RAM LOL
     # feel free ot decrease the number of processes
-    file_type = "mini"
+    file_type = "val"
     claim_file_name = f"{file_type}_claim_with_subq.json"
-    claim_dir = "NumTemp-E9C0/data/claim_with_subq_data/"
+    claim_dir = "NumTemp-E9C0/data/claim_with_subq_data_prompt/"
     claim_file = claim_dir + claim_file_name
 
-    num_processes = 2
+    num_processes = 8
     with open('NumTemp-E9C0/data/corpus_evidence_unified.json') as f:
         corpus = json.load(f)
     with open(claim_file) as f:
         claims = json.load(f)
+        print(len(claims))
 
     corpus = [corpus[key] for key in corpus]
 
