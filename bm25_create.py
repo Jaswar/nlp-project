@@ -10,6 +10,11 @@ def thread_job(thread_id, claims, corpus, tokenized_corpus, output):
     for i, claim in enumerate(claims):
         print(f'Processing claim {i + 1} in thread {thread_id}')
         tokenized_claim = claim['claim'].split(' ')
+        if 'predicted_programs' in claim:
+            program = claim['predicted_programs'][0]
+            program = ' '.join(p for p in program)
+            tokenized_program = program.split(' ')
+            tokenized_claim += tokenized_program
         top_n = bm25.get_top_n(tokenized_claim, corpus, n=100)
         claim['top_n'] = top_n
         result.append(claim)

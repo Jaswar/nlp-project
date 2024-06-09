@@ -44,8 +44,8 @@ def main(args):
     overall_accuracy = accuracy_score(ground_truth, predictions)
     overall_f1 = f1_score(ground_truth, predictions, average='weighted')
     if not args.latex:
-        print(f"Overall F1 score: %")
-        print(f'Overall accuracy: %')
+        print(f"Overall F1 score: {round(overall_f1 * 100, 2)}%")
+        print(f'Overall accuracy: {round(overall_accuracy * 100, 2)}%')
     else:
         print(f'{round(overall_f1 * 100, 2)} & {round(overall_accuracy * 100, 2)} \\\\')
 

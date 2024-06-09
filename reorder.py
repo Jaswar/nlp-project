@@ -21,18 +21,22 @@ def reorder(claim, evidence, model):
 
 def main():
     model = SentenceTransformer('paraphrase-MiniLM-L6-v2')
-    with open('NumTemp-E9C0/output/bm25_top_100_test', 'r') as f:
+    with open('NumTemp-E9C0/output/programfc_bm25_top_100_train', 'r') as f:
         claims = json.load(f)
 
     reordered_claims = []
     for claim in tqdm(claims):
         cl = claim['claim']
         evidence = claim['top_n']
+        if 'predicted_programs' in claim:
+            program = claim['predicted_programs'][0]
+            program = ' '.join(p for p in program)
+            cl += ' ' + program
         evidence = reorder(cl, evidence, model)
         claim['top_n'] = evidence
         reordered_claims.append(claim)
 
-    with open('NumTemp-E9C0/output/bm25_top_100_test_reordered.json', 'w') as f:
+    with open('NumTemp-E9C0/output/programfc_bm25_top_100_train_reordered.json', 'w') as f:
         json.dump(reordered_claims, f, indent=4)
 
 
